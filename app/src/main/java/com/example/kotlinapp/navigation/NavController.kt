@@ -73,17 +73,8 @@ class NavController(
         }
     }
 
-    fun navigateToPostDetail(postId: Long, from: NavBackStackEntry) {
-        // In order to discard duplicated navigation events, we check the Lifecycle
-        if (from.lifecycleIsResumed()) {
-            navController.navigate("${MainDestinations.POST_DETAIL_ROUTE}/$postId")
-        }
-    }
-
-    fun navigateToSignIn(from: NavBackStackEntry) {
-        if (from.lifecycleIsResumed()) {
-            navController.navigate(MainDestinations.SIGN_IN_ROUTE)
-        }
+    fun navigateToSignIn() {
+        navController.navigate(MainDestinations.SIGN_IN_ROUTE)
     }
 
     fun navigateToSignUp() {

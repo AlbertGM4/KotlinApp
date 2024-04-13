@@ -1,4 +1,4 @@
-package com.example.kotlinapp.ui.theme
+package com.example.kotlinapp.view.ui.theme
 
 import android.app.Activity
 import android.os.Build

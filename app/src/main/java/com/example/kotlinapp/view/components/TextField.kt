@@ -1,4 +1,4 @@
-package com.example.kotlinapp.components
+package com.example.kotlinapp.view.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding

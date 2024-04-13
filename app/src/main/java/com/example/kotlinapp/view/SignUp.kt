@@ -1,16 +1,13 @@
-package com.example.kotlinapp.screens
+package com.example.kotlinapp.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,8 +18,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,15 +31,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kotlinapp.R
-import com.example.kotlinapp.components.RoundedTextField
-import com.example.kotlinapp.ui.theme.KotlinAppTheme
+import com.example.kotlinapp.model.dto.CreateUserDto
+import com.example.kotlinapp.view.components.RoundedTextField
+import com.example.kotlinapp.viewmodel.AuthViewModel
 
 @Composable
 fun SignUp(
+    authViewModel: AuthViewModel,
     onNavigateToSignIn: () -> Unit
 ) {
     Scaffold(
@@ -52,7 +48,7 @@ fun SignUp(
         containerColor = MaterialTheme.colorScheme.background
     )
     { innerPadding ->
-        SignUpBody(onNavigateToSignIn, innerPadding)
+        SignUpBody(authViewModel, onNavigateToSignIn, innerPadding)
     }
 }
 
@@ -91,6 +87,7 @@ fun SignUpTopBar() {
 
 @Composable
 fun SignUpBody(
+    authViewModel: AuthViewModel,
     onNavigateToSignIn: () -> Unit,
     innerPadding: PaddingValues,
 ) {
@@ -165,29 +162,17 @@ fun SignUpBody(
         item {
             TextButton(
                 onClick = {
-//                        val request = LoginRequest(username, password)
-//
-//                        GlobalScope.launch(Dispatchers.IO) {
-//                            try {
-//                                val response = RetrofitInstance.api.login(request)
-//                                if (response.isSuccessful) {
-//                                    // La solicitud fue exitosa
-//                                    // Por ejemplo, iniciar una nueva actividad
-//                                    val nextActivity = Intent(this@SignInActivity, NextActivity::class.java)
-//                                    startActivity(nextActivity)
-//                                    // Opcional: finaliza la actividad actual para evitar que el
-//                                    // usuario regrese presionando el botón de retroceso
-//                                    //finish()
-//
-//                                } else {
-//                                    // La solicitud no fue exitosa, maneja el error aquí
-//
-//                                }
-//                            } catch (e: Exception) {
-//                                // Ocurrió un error de red, maneja la excepción aquí
-//
-//                            }
-//                        }
+                    val createUserDto = CreateUserDto(
+                        email = email.trim(),
+                        password = password.trim(),
+                        username = username.trim(),
+                        name = name.trim(),
+                        surname = surname.trim(),
+                        mobile = mobile.trim(),
+                        bio = about.trim(),
+                    )
+                    authViewModel
+                        .signUpUser(createUserDto)
                 },
                 shape = RoundedCornerShape(25.dp),
                 colors = ButtonDefaults.buttonColors(),
@@ -220,13 +205,13 @@ fun SignUpBody(
 }
 
 
-@Preview(widthDp = 390, heightDp = 844)
-@Composable
-private fun SignUpPreview() {
-    KotlinAppTheme {
-        SignUp { }
-    }
-}
+//@Preview(widthDp = 390, heightDp = 844)
+//@Composable
+//private fun SignUpPreview() {
+//    KotlinAppTheme {
+//        SignUp { }
+//    }
+//}
 
 // BUENO
 //Box(

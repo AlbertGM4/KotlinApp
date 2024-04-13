@@ -3,14 +3,16 @@ package com.example.kotlinapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.kotlinapp.navigation.MainDestinations
-import com.example.kotlinapp.navigation.rememberNavController
-import com.example.kotlinapp.screens.SignIn
-import com.example.kotlinapp.screens.SignUp
-import com.example.kotlinapp.ui.theme.KotlinAppTheme
+import com.example.kotlinapp.view.SignIn
+import com.example.kotlinapp.view.SignUp
+import com.example.kotlinapp.view.navigation.MainDestinations
+import com.example.kotlinapp.view.navigation.rememberNavController
+import com.example.kotlinapp.view.ui.theme.KotlinAppTheme
+import com.example.kotlinapp.viewmodel.AuthViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,11 +20,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             KotlinAppTheme {
                 val navController = rememberNavController()
+                val authViewModel: AuthViewModel = viewModel()
                 NavHost(
                     navController = navController.navController,
                     startDestination = MainDestinations.SIGN_IN_ROUTE
                 ) {
                     tripgramNavGraph(
+                        authViewModel = authViewModel,
                         onNavigateToSignIn = navController::navigateToSignIn,
                         onNavigateToSignUp = navController::navigateToSignUp
                     )
@@ -32,8 +36,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 private fun NavGraphBuilder.tripgramNavGraph(
+    authViewModel: AuthViewModel,
     onNavigateToSignIn: () -> Unit,
     onNavigateToSignUp: () -> Unit,
 ) {
@@ -41,20 +45,12 @@ private fun NavGraphBuilder.tripgramNavGraph(
     composable(
         MainDestinations.SIGN_IN_ROUTE,
     ) {
-        SignIn(onNavigateToSignUp)
+        SignIn(authViewModel, onNavigateToSignUp)
     }
     // Sign Up
     composable(
         MainDestinations.SIGN_UP_ROUTE,
     ) {
-        SignUp(onNavigateToSignIn)
+        SignUp(authViewModel, onNavigateToSignIn)
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
-//    KotlinAppTheme {
-//        Greeting("Android")
-//    }
-//}

@@ -1,4 +1,4 @@
-package com.example.kotlinapp.navigation
+package com.example.kotlinapp.view.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
